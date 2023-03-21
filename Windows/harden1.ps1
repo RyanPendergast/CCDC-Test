@@ -31,3 +31,11 @@ Start-Process -FilePath "$env:administrator\Downloads\FirefoxSetup.exe" -Argumen
 #install malwarebytes
 Invoke-WebRequest -Uri "https://downloads.malwarebytes.com/file/mb4_offline" -OutFile "$env:administrator\Downloads\Malwarebytes.exe"
 Start-Process -FilePath "$env:administrator\Downloads\Malwarebytes.exe" -ArgumentList "/S" -Wait
+
+#Disable Vulnerable Services/Features
+Get-WindowsFeature FS-SMB1 
+Remove-WindowsFeature FS-SMB1
+Stop-Service -Name "Print Spooler"
+Stop-Service -Name "Windows Mobile Hotspot Service"
+
+(New-Object -ComObject HNetCfg.FwPolicy2).RestoreLocalFirewallDefaults()
